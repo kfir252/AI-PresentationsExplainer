@@ -49,7 +49,7 @@ class PresentationParser:
           self.print_presentation_data(self.presentation_data)
 
 def main():
-    PPTX_PATH = "C:\Users\kfirl\Desktop\presentation.pptx"
+    PPTX_PATH = "C:\\Users\\kfirl\\Desktop\\presentation.pptx"
     parser = PresentationParser(PPTX_PATH)
     parser.process_presentation(1)
 
