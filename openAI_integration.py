@@ -1,34 +1,21 @@
-import aiohttp
-import asyncio
+from openai import AsyncOpenAI
 
 class OpenAIIntegration:
-    def __init__(self, api_key):
+    def __init__(self, api_key: str, setup: str):
         self.api_key = api_key
-        self.endpoint = "https://api.openai.com/v1/completions"
-        self.headers = {
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {self.api_key}"
-        }
-
-    async def send_to_openai_api(self, prompt):
-        """
-        Sends text to OpenAI's API asynchronously and returns the response.
-
-        Args:
-            prompt (str): Text to send as a prompt.
-
-        Returns:
-            str: Response text from OpenAI API.
-        """
-        payload = {
-            "model": "text-davinci-003",  # Adjust to your preferred model
-            "prompt": prompt,
-            "max_tokens": 150  # Adjust token limit based on your needs
-        }
+        self.message_history = [{"role": "user", "content": setup}]
+        self.client = AsyncOpenAI(api_key=self.api_key)
         
-        async with aiohttp.ClientSession() as session:
-            async with session.post(self.endpoint, json=payload, headers=self.headers) as response:
-                response_json = await response.json()
-                return response_json["choices"][0]["text"].strip()
-
-
+    
+    async def chat(self, prompt: str):
+        self.message_history.append({"role": "user", "content": prompt})
+        
+        completion = await self.client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=self.message_history,
+            max_tokens=150
+        )
+        response = completion.choices[0].message.content.strip() if completion.choices else ""
+        self.message_history.append({"role": "assistant", "content": response})
+        
+        return response
