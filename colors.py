@@ -2,6 +2,10 @@ from random import randint
 """this made by kfir-rabinovitch-levi and can't be used by anyone else without his permission"""
 
 def intofoas_ps(color,data, end='\n'):
+    if colors.off:
+        print(*data, end=end)
+        return
+        
     print(color, end='')
     if len(data) >= 1:
         print(data[0], end='')
@@ -12,6 +16,7 @@ def intofoas_ps(color,data, end='\n'):
     print("\033[00m", flush=True, end='')
 
 class colors:
+    off = False
     def Red(*data, end='\n'):
         intofoas_ps("\033[91m",data, end)
 

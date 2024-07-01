@@ -34,14 +34,16 @@ class Status:
     def is_unknown_uid(self):
         return self.status == 'unknown_uid'
 
-def colored(client):
+def console(client):
     while True:
         colors.LightPurple("Enter Action[status/upload/quit]: ", end='')
         action = input()
 
         if "status" in action.lower():
             colors.LightPurple("Enter uid: ", end='')
-            uid = input('\033[95m')
+            if not colors.off:
+                print('\033[95m', end='')
+            uid = input()
 
             status = client.status(uid)
 
@@ -71,54 +73,18 @@ def colored(client):
 
         else:
             colors.Red("Unknown command!")
-        print()
-        
-def uncolored(client):
-    while(True):
-        action = input("Enter Action[status/upload/quit]: ")
-        if "status" in action.lower():
-            uid = input("Enter uid: ")
-            status = client.status(uid)
+        print() 
+  
 
-            if status.is_done():
-                print(f"Explanation: {status.explanation}")
-            elif status.is_unknown_uid():
-                print(f"unknown_uid: {uid}")
-            else:
-                print(f"Status: {status.status}")
-
-        elif "upload" in action.lower():
-            file_path = input("Enter file path: ")
-            uid = client.upload(file_path)
-            if uid is None:
-                colors.Red("FileNotFoundError: given bad path\n")
-                continue
-            
-            print(f"Uploaded file, UID: {uid}")
-
-        elif "quit" in action.lower():
-            print("Client.Quit")
-            break
-
-        else:
-            print("Unknown command!")
-        print('')
-
-def main(full_url: str):
-    client = GPTExplainerClient(full_url)
-    # input action(upload/status)
+if __name__ == "__main__":
+    URL = 'http://localhost:5000'
     print('You Can View Colors In Some Terminals')
     is_colored = input('Use Colored Version (y/n): ')
     
-    if is_colored == 'y':
-        colored(client)
-    else:
-        uncolored(client)
-    
-
-
-if __name__ == "__main__":
-    main('http://localhost:5000')
+    if is_colored == 'n':
+        colors.off = True
+        
+    console(GPTExplainerClient(URL))
 
 
 
