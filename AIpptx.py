@@ -50,7 +50,6 @@ class AIpptx:
                     "response": "empty"
                     })
 
-    
     def save_json_file(self, filename: str):
         """
         Saves the slide_responses to a JSON file.

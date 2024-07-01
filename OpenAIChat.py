@@ -15,7 +15,6 @@ class OpenAIChat:
         self.message_history = [{"role": "user", "content": setup}]
         self.client = AsyncOpenAI(api_key=self.api_key)
         
-    
     async def chat(self, prompt: str):
         """
         Add a prompt to the chat with OpenAI.

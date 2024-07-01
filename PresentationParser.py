@@ -24,7 +24,6 @@ class PresentationParser:
             for slide_number, slide in enumerate(presentation.slides, start=1)
         ]
 
-    
     def get_slide(self, slide_index:int ) -> dict[str, None]:
         """
         Retrieves the slide data based on the slide index.

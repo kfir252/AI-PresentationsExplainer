@@ -7,8 +7,6 @@ added spacial features of understanding each slide
 with the information of the slides & all the slides before  
 '''
 
-
-
 class SETTINGS:
     '''
         Here you can change the main settings of this program:
