@@ -29,15 +29,17 @@ class AIpptx:
         Returns:
             None
         """
-
         ai_agent = OpenAIChat(self.api_key, setup)
         
-        slide_count = min(self.parser.total_slides, slide_count)
-        
+        if slide_count is None:
+            slide_count = self.parser.total_slides
+        else:
+            slide_count = min(self.parser.total_slides, slide_count)
+
         for slide_index in range(1, slide_count + 1):
             if slide_data := self.parser.get_slide(slide_index):
                 prompt = ' '.join(slide_data["content"]) 
-                
+
                 response = await ai_agent.chat(prompt)
 
                 self.slide_responses.append({

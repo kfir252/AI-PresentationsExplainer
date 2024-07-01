@@ -15,9 +15,8 @@ class __:
     UPLOAD_FOLDER = 'uploads'
     OUTPUT_FOLDER = 'outputs'
     
-    INPUT_PPTX_PATH = "presentation.pptx"
     API_KEY = "sk-proj-xl0wdyeVmaJa2cneHXKvT3BlbkFJ1fGKvhcm74mM94u4j1Pr"
-    MAX_SLIDES_ALLOWED = 10
+    MAX_SLIDES_ALLOWED = 10 #can be none for unlimited
     
     AI_SETUP = """You are a powerpoint slide explainer, but you can only read the text content of the slides (not the pictures).
     You will get the content of the slides, try to make sense of the information an understand what the idea of the slide.
