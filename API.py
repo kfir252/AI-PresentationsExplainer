@@ -40,7 +40,7 @@ def check_status(uid):
     output_files = os.listdir(OUTPUT_FOLDER)
 
     for filename in upload_files:
-        if uid in filename:
+        if uid == filename.split('_')[1]:
             timestamp, _, original_filename = filename.split('_', 2)
             if any(uid in fname for fname in output_files):
                 output_filepath = next(fname for fname in output_files if uid in fname)
@@ -59,8 +59,14 @@ def check_status(uid):
                     'timestamp': timestamp,
                     'explanation': None
                 })
-    return jsonify({'error': 'Not found'}), 404
+                
+    return jsonify({'status': 'unknown_uid',
+                    'filename': None,
+                    'timestamp': None,
+                    'explanation': None}), 404
 
-
+def main():
+    app.run()
+    
 if __name__ == '__main__':
-    app.run(debug=True)
+    main()
