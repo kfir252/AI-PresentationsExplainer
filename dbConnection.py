@@ -51,7 +51,7 @@ def init_db():
     session.close()
 
 if __name__ == "__main__":
-    engine = create_engine("sqlite:///app.db", echo=True)
+    engine = create_engine("sqlite:///db/app.db", echo=True)
     Base.metadata.create_all(bind=engine)
 
     Session = sessionmaker(bind=engine)
