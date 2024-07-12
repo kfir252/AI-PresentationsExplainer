@@ -4,6 +4,9 @@ import uuid
 import datetime
 import sys
 
+from db.dbConnection import Upload, addUpload, getUpload
+from db.dbConnection import User, addUser, getUser, getUserUploads, deleteUser
+
 #flask setup
 from flask import Flask, request, jsonify, send_from_directory
 app = Flask(__name__)
@@ -71,12 +74,10 @@ def main():
 
 
 
-import db.dbConnection as dbc
-dbc.session.add(dbc.User("test@gmail.com"))
 
-#Make Uploads
-dbc.session.add(dbc.Upload('first', "test@gmail.com"))
-dbc.session.commit()
+
+
+
 #C:/Users/kfirl/Desktop/presentation.pptx
 
 

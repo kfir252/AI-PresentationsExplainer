@@ -3,6 +3,8 @@ from AIpptx import AIpptx
 import time
 import os
 
+from db.dbConnection import Upload, addUpload, getUpload
+from db.dbConnection import User, addUser, getUser, getUserUploads, deleteUser
 
 '''
 added spacial features of understanding each slide
@@ -38,12 +40,7 @@ async def upload_to_output_process(file_path):
     ai_pptx.save_json_file(get_output_filepath(file_path))
 
 
-import db.dbConnection as dbc
-dbc.session.add(dbc.User("explainer@gmail.com"))
 
-#Make Uploads
-dbc.session.add(dbc.Upload('ex', "test@gmail.com"))
-dbc.session.commit()
 
 async def main():
     os.makedirs(__.UPLOAD_FOLDER, exist_ok=True)

@@ -67,10 +67,15 @@ class Upload(Base):
             return a
 
 
+
+
+
 #things you can do with just the users email
 def addUser(email):
-    session.add(User(email))
-    session.commit()
+    user = getUser(email)
+    if not user:
+        session.add(User(email))
+        session.commit()
 
 def getUser(email):
     return User.getUser(email)
@@ -82,7 +87,6 @@ def deleteUser(email):
     user = getUser(email)
     if not user:
         return
-    
     session.query(Upload).filter(Upload.user_id == user.id).delete()
     session.query(User).filter(User.id == user.id).delete()
     session.commit()
@@ -94,6 +98,8 @@ def addUpload(filename, email):
 
 def getUpload(uid):
     return Upload.getUpload(uid)
+
+
 
 
 # setup the connection
