@@ -68,4 +68,3 @@ class AIpptx:
                 json.dump(self.slide_responses, f, indent=4)
         except Exception as e:
             print(f"Error saving JSON to file: {str(e)}")
-

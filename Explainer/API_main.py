@@ -2,15 +2,16 @@
 import os
 import uuid
 import datetime
+import sys
 
 #flask setup
 from flask import Flask, request, jsonify, send_from_directory
 app = Flask(__name__)
 
 # data folders
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'Explainer/db/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-OUTPUT_FOLDER = 'outputs'
+OUTPUT_FOLDER = 'Explainer/db/outputs'
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 #quick functions
@@ -22,6 +23,7 @@ get_new_uid = lambda: str(uuid.uuid4())
 def load_file_from_request():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
+    
     file = request.files['file']
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
@@ -32,7 +34,6 @@ def load_file_from_request():
     
     file.save(filepath)
     return jsonify({'uid': uid})
-
 
 @app.route('/status/<uid>', methods=['GET'])
 def check_status(uid):
@@ -67,6 +68,13 @@ def check_status(uid):
 
 def main():
     app.run()
-    
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     main()

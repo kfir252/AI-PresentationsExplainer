@@ -52,12 +52,12 @@ class Upload(Base):
     def __repr__(self):
         return f"({self.id},{self.uid},{self.filename},{self.upload_time},{self.finish_time},{self.status},{self.user_id},{self.user})"
 
-engine = create_engine("sqlite:///db/app.db", echo=True)
+engine = create_engine("sqlite:///Explainer/API/db/app.db", echo=True)
+Session = sessionmaker(bind=engine)
+    
 Base.metadata.create_all(bind=engine)
 
-Session = sessionmaker(bind=engine)
 session = Session()
-
 
 if __name__ == "__main__":
     #Make User
