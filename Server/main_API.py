@@ -71,9 +71,13 @@ def main():
 
 
 
+import db.dbConnection as dbc
+dbc.session.add(dbc.User("test@gmail.com"))
 
-
-#   C:/Users/kfirl/Desktop/presentation.pptx
+#Make Uploads
+dbc.session.add(dbc.Upload('first', "test@gmail.com"))
+dbc.session.commit()
+#C:/Users/kfirl/Desktop/presentation.pptx
 
 
 if __name__ == '__main__':

@@ -8,6 +8,13 @@ import os
 
 Base = declarative_base()
 
+
+
+'''
+    Database SqlAlchemy Classes:
+    ** User
+    ** Upload
+'''
 class User(Base):
     __tablename__ = 'users'
     
@@ -50,15 +57,45 @@ class Upload(Base):
         self.user_id = self.user.id
         
     def __repr__(self):
-        return f"({self.id},{self.uid},{self.filename},{self.upload_time},{self.finish_time},{self.status},{self.user_id},{self.user})"
+        return f"({self.id},{self.uid},{self.filename},{self.upload_time},{self.finish_time},{self.status},{self.user_id})"
 
-engine = create_engine("sqlite:///Explainer/API/db/app.db", echo=True)
+    @staticmethod
+    def getUpload(uid):
+        ans = session.query(Upload).filter(Upload.uid == uid)
+        a = None
+        for a in ans:
+            return a
+
+
+#things you can do with just the users email
+def addUser(email):
+    session.add(User(email))
+    session.commit()
+
+def getUser(email):
+    return User.getUser(email)
+
+def getUserUploads(email):
+    return User.getUser(email).uploads
+
+
+
+def addUpload(filename, email):
+    session.add(Upload(filename, email))
+    session.commit()
+
+def getUpload(uid):
+    return Upload.getUpload(uid)
+
+
+# setup the connection
+engine = create_engine("sqlite:///Server/db/app.db", echo=True)
 Session = sessionmaker(bind=engine)
-    
 Base.metadata.create_all(bind=engine)
-
 session = Session()
 
+
+# tests
 if __name__ == "__main__":
     #Make User
     session.add(User("test@gmail.com"))
@@ -70,8 +107,7 @@ if __name__ == "__main__":
     session.add(Upload('רביעי', "test@gmail.com"))
     
     #Check On Users Uploads
-    for i in User.getUser("test@gmail.com").uploads:
-        print(i)
+    print(User.getUser("test@gmail.com").uploads)
     
     #commit changes
     session.commit()
