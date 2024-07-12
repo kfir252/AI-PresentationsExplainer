@@ -12,8 +12,8 @@ class __:
     '''
         Here you can change the main settings of this program:
     '''
-    UPLOAD_FOLDER = 'Explainer/db/uploads'
-    OUTPUT_FOLDER = 'Explainer/db/outputs'
+    UPLOAD_FOLDER = 'Server/db/uploads'
+    OUTPUT_FOLDER = 'Server/db/outputs'
     
     API_KEY = "sk-proj-xl0wdyeVmaJa2cneHXKvT3BlbkFJ1fGKvhcm74mM94u4j1Pr"
     MAX_SLIDES_ALLOWED = 10 #can be none for unlimited

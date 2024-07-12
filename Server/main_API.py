@@ -9,9 +9,9 @@ from flask import Flask, request, jsonify, send_from_directory
 app = Flask(__name__)
 
 # data folders
-UPLOAD_FOLDER = 'Explainer/db/uploads'
+UPLOAD_FOLDER = 'Server/db/uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-OUTPUT_FOLDER = 'Explainer/db/outputs'
+OUTPUT_FOLDER = 'Server/db/outputs'
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 #quick functions
@@ -73,7 +73,7 @@ def main():
 
 
 
-
+#   C:/Users/kfirl/Desktop/presentation.pptx
 
 
 if __name__ == '__main__':
