@@ -53,8 +53,13 @@ class Upload(Base):
         self.upload_time = datetime.datetime.utcnow()
         self.finish_time = None
         self.status = "panding"
-        self.user = User.getUser(email)
+        
+        if email == None:
+            self.user = getUser('Anonymous_user')
+        else:
+            self.user = User.getUser(email)
         self.user_id = self.user.id
+
         
     def __repr__(self):
         return f"({self.id},{self.uid},{self.filename},{self.upload_time},{self.finish_time},{self.status},{self.user_id})"
@@ -99,7 +104,9 @@ def addUpload(filename, email):
 def getUpload(uid):
     return Upload.getUpload(uid)
 
-
+def addUpload(filename, email=None):
+    session.add(Upload(filename, email))
+    session.commit()
 
 
 # setup the connection
@@ -108,6 +115,13 @@ Session = sessionmaker(bind=engine)
 Base.metadata.create_all(bind=engine)
 session = Session()
 
+
+unknown_user = getUser('Anonymous_user')
+if not unknown_user:
+    unknown_user = User('Anonymous_user')
+    unknown_user.id = -1
+    session.add(unknown_user)
+    session.commit()
 
 # tests
 if __name__ == "__main__":
@@ -122,7 +136,7 @@ if __name__ == "__main__":
     addUpload('שלישי', "tamir@gmail.com")
     addUpload('רביעי', "kfir@gmail.com")
     addUpload('רביעי', "kfir@gmail.com")
-    addUpload('רביעי', "amir@gmail.com")
+    addUpload('אנונימי')
     
     # deleteUser("kfir@gmail.com")
     # deleteUser("tamir@gmail.com")
