@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, delete
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker, Session
 
@@ -78,8 +78,16 @@ def getUser(email):
 def getUserUploads(email):
     return User.getUser(email).uploads
 
-
-
+def deleteUser(email):
+    user = getUser(email)
+    if not user:
+        return
+    
+    session.query(Upload).filter(Upload.user_id == user.id).delete()
+    session.query(User).filter(User.id == user.id).delete()
+    session.commit()
+        
+        
 def addUpload(filename, email):
     session.add(Upload(filename, email))
     session.commit()
@@ -98,17 +106,20 @@ session = Session()
 # tests
 if __name__ == "__main__":
     #Make User
-    session.add(User("test@gmail.com"))
+    addUser("kfir@gmail.com")
+    addUser("tamir@gmail.com")
+    addUser("amir@gmail.com")
     
     #Make Uploads
-    session.add(Upload('first', "test@gmail.com"))
-    session.add(Upload('sec', "test@gmail.com"))
-    session.add(Upload('שלישי', "test@gmail.com"))
-    session.add(Upload('רביעי', "test@gmail.com"))
+    addUpload('first', "tamir@gmail.com")
+    addUpload('sec', "kfir@gmail.com")
+    addUpload('שלישי', "tamir@gmail.com")
+    addUpload('רביעי', "kfir@gmail.com")
+    addUpload('רביעי', "kfir@gmail.com")
+    addUpload('רביעי', "amir@gmail.com")
     
-    #Check On Users Uploads
-    print(User.getUser("test@gmail.com").uploads)
-    
+    # deleteUser("kfir@gmail.com")
+    # deleteUser("tamir@gmail.com")
+    # deleteUser("amir@gmail.com")
     #commit changes
-    session.commit()
     
