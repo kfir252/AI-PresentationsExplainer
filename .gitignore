@@ -1,3 +1,6 @@
 
 /__pycache__
 /tools
+/Client/__pycache__
+/Server/__pycache__
+/Server/db/__pycache__

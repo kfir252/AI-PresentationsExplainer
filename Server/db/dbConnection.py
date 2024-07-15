@@ -30,9 +30,9 @@ class User(Base):
     @staticmethod
     def getUser(email):
         ans = session.query(User).filter(User.email == email)
-        a = None
         for a in ans:
             return a
+        return None
 
 class Upload(Base):
     __tablename__ = 'uploads'
@@ -46,7 +46,7 @@ class Upload(Base):
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     user = relationship('User', back_populates='uploads')
 
-    def __init__(self, filename, email):
+    def __init__(self, filename, email, uid):
         self.uid = str(uuid.uuid4())
         self.filename = filename
         self.upload_time = datetime.datetime.utcnow()
@@ -98,22 +98,26 @@ def deleteUser(email):
     
     
     
-        
-def addUpload(filename, email):
-    session.add(Upload(filename, email))
-    session.commit()
-
 def getUpload(uid):
     return Upload.getUpload(uid)
 
-def addUpload(filename, email=None):
-    session.add(Upload(filename, email))
+def addUpload(filename, uid, email=None):
+    addUser(email)
+    session.add(Upload(filename, email, uid))
     session.commit()
 
 def GetPendingUploads():
     ans = session.query(Upload).filter(Upload.status == 'panding').order_by(Upload.upload_time.asc()).all()
     return ans
 
+def SetUploadToProcessing(uid):
+    up = getUpload(uid)
+    up.status = 'processing'
+
+def SetUploadToDone(uid):
+    up = getUpload(uid)
+    up.finish_time = datetime.datetime.utcnow()
+    up.status = 'done'
 
 
 # setup the connection
@@ -134,16 +138,16 @@ if not unknown_user:
 if __name__ == "__main__":
     #Make User
     addUser("kfir@gmail.com")
-    addUser("tamir@gmail.com")
-    addUser("amir@gmail.com")
+    # addUser("tamir@gmail.com")
+    # addUser("amir@gmail.com")
     
-    #Make Uploads
-    addUpload('first', "tamir@gmail.com")
-    addUpload('sec', "kfir@gmail.com")
-    addUpload('שלישי', "tamir@gmail.com")
-    addUpload('רביעי', "kfir@gmail.com")
-    addUpload('רביעי', "kfir@gmail.com")
-    addUpload('אנונימי')
+    # #Make Uploads
+    # addUpload('first', "tamir@gmail.com")
+    # addUpload('sec', "kfir@gmail.com")
+    # addUpload('שלישי', "tamir@gmail.com")
+    # addUpload('רביעי', "kfir@gmail.com")
+    # addUpload('רביעי', "kfir@gmail.com")
+    # addUpload('אנונימי')
     
     
     for i in GetPendingUploads():

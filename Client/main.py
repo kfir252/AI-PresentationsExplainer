@@ -7,10 +7,10 @@ class GPTExplainerClient:
     def __init__(self, base_url):
         self.base_url = base_url
 
-    def upload(self, file_path):
+    def upload(self, file_path, email):
         try:
             with open(file_path, 'rb') as file:
-                response = requests.post(f"{self.base_url}/upload", files={'file': file})
+                response = requests.post(f"{self.base_url}/upload", files={'file': file, 'email': email})
         except FileNotFoundError:
             return None
         return response.json()['uid']
@@ -18,8 +18,9 @@ class GPTExplainerClient:
     def status(self, uid):
         response = requests.get(f"{self.base_url}/status/{uid}")
         data = response.json()
-
         return Status(data['status'], data['filename'], data['timestamp'], data['explanation'])
+
+
 
 class Status:
     def __init__(self, status, filename, timestamp, explanation):
@@ -33,6 +34,9 @@ class Status:
 
     def is_unknown_uid(self):
         return self.status == 'unknown_uid'
+
+
+
 
 def console(client):
     while True:
@@ -58,8 +62,10 @@ def console(client):
         elif "upload" in action.lower():
             colors.LightPurple("Enter file path: ", end='')
             file_path = input()
+            colors.LightPurple("Enter email (optional): ", end='')
+            email = input()
 
-            uid = client.upload(file_path)
+            uid = client.upload(file_path, email)
             if uid is None:
                 colors.Red("FileNotFoundError: given bad path\n")
                 continue
