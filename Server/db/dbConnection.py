@@ -115,15 +115,17 @@ def GetPendingUploads():
 def SetUploadToProcessing(uid):
     up = getUpload(uid)
     up.status = 'processing'
+    session.commit()
 
 def SetUploadToDone(uid):
     up = getUpload(uid)
     up.finish_time = datetime.datetime.utcnow()
     up.status = 'done'
+    session.commit()
 
 
 # setup the connection
-engine = create_engine("sqlite:///Server/db/app.db", echo=True)
+engine = create_engine("sqlite:///Server/db/app.db", echo=True)#<------------------------------echo
 Session = sessionmaker(bind=engine)
 Base.metadata.create_all(bind=engine)
 session = Session()
@@ -140,6 +142,7 @@ if not unknown_user:
 if __name__ == "__main__":
     #Make User
     addUser("kfir@gmail.com")
+    addUpload('first', '10', "tamir@gmail.com")
     # addUser("tamir@gmail.com")
     # addUser("amir@gmail.com")
     

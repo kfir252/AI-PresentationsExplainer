@@ -24,7 +24,7 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 get_timestamp = lambda: datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 get_new_uid = lambda: str(uuid.uuid4())
 
-
+#done!
 # ██╗   ██╗██████╗ ██╗      ██████╗  █████╗ ██████╗ ███████╗
 # ██║   ██║██╔══██╗██║     ██╔═══██╗██╔══██╗██╔══██╗██╔════╝
 # ██║   ██║██████╔╝██║     ██║   ██║███████║██║  ██║███████╗
@@ -50,8 +50,8 @@ def load_file_from_request():
     else:
         print('no email given')
         addUpload(file.filename, uid)
-
-    filename = f"{get_timestamp()}_{uid}_{file.filename}"
+        
+    filename = uid
     filepath = os.path.join(UPLOAD_FOLDER, filename)
     
     file.save(filepath)

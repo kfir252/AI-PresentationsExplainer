@@ -4,7 +4,7 @@ import time
 import os
 
 from db.dbConnection import Upload, addUpload, getUpload
-from db.dbConnection import User, addUser, getUser, getUserUploads, deleteUser
+from db.dbConnection import User, addUser, getUser, getUserUploads, deleteUser, GetPendingUploads, SetUploadToProcessing, SetUploadToDone
 
 '''
 added spacial features of understanding each slide
@@ -26,13 +26,11 @@ class __:
     """
 
 def get_unprocessed_files():
-    processed_files = set(os.listdir(__.OUTPUT_FOLDER))
-    all_files = os.listdir(__.UPLOAD_FOLDER)
-    
-    return [f for f in all_files if f.replace('pptx', 'json') not in processed_files]
+    unprocessed_files = GetPendingUploads()
+    return unprocessed_files
 
 def get_output_filepath(path):
-    return path.replace(__.UPLOAD_FOLDER, __.OUTPUT_FOLDER).replace('.pptx', '.json')
+    return path.replace(__.UPLOAD_FOLDER, __.OUTPUT_FOLDER) + '.json'
     
 async def upload_to_output_process(file_path):
     ai_pptx = AIpptx(__.API_KEY, file_path)
@@ -50,12 +48,20 @@ async def main():
     #the prints make this main self explanatory
     while True:
         unprocessed_files = get_unprocessed_files()
-        for filename in unprocessed_files:
-            print('found -', filename)
-            file_path = os.path.join(__.UPLOAD_FOLDER, filename)
-            print('process -', filename)
+        print(unprocessed_files)
+        for upload in unprocessed_files:
+            print('found -', upload.filename, ':', upload.uid)
+            file_path = os.path.join(__.UPLOAD_FOLDER, upload.uid)
+            print('process -', upload.filename, ':', upload.uid)
+            
+            SetUploadToProcessing(upload.uid)
+            
             await upload_to_output_process(file_path)
-            print('done -', filename)
+            
+            SetUploadToDone(upload.uid)
+            
+            print('done -', upload.filename, ':', upload.uid)
+            
             
         time.sleep(10)
 
