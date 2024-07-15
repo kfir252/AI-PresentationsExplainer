@@ -47,8 +47,15 @@ class Status:
 
 
 def console(client):
+    colors.Purple('''
+┌───────────────────────────────────────────┐
+│     welcome to the pptxGPT client!        │
+├───────────────────────────────────────────┤
+│ You can type "help" at any point for help │
+└───────────────────────────────────────────┘''')
+    
     while True:
-        colors.LightPurple("Enter Action[status/upload/quit]: ", end='')
+        colors.LightPurple("Enter Action: ", end='')
         action = input()
 
         if "status -m" in action.lower():
@@ -68,7 +75,7 @@ def console(client):
                 colors.Clear(status.explanation)
 
             elif status.is_unknown_uid():
-                colors.Red(f"Unknown_uid: ")
+                colors.Red(f"unknown file (the user don't have file named {filename}): ")
             else:
                 colors.Yellow(f"Status: {status.status}")
 
@@ -104,18 +111,19 @@ def console(client):
             colors.Green("Uploaded file, UID: ", end='')
             colors.Purple({uid})
 
+        elif "help" in action.lower():
+            colors.Purple('''commands:
+    upload    # upload your file and get his uid
+    status    # get status for upload with his uid (use 'status -m' if you forgot the uid)
+    quit      # exit the client''')
+            
         elif "quit" in action.lower():
-            colors.Green("Client.Quit")
-            break
-
-        else:
-            colors.Red("Unknown command!")
-        print() 
+            quit()
   
 
 if __name__ == "__main__":
     URL = 'http://localhost:5000'
-    print('You Can View Colors In Some Terminals')
+    print('\nYou Can View Colors In Some Terminals')
     is_colored = input('Use Colored Version (y/n): ')
     
     if is_colored == 'n':

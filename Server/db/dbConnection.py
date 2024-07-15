@@ -111,10 +111,14 @@ def GetPendingUploads():
     return ans
 
 def GetUploadByEmailAndFilename(email, filename):
+    if getUser(email) is None:
+        return None
+    
     ans = session.query(Upload).filter(Upload.filename == filename).filter(Upload.user_id == getUser(email).id).order_by(Upload.upload_time.desc()).all()
-    if len(ans) > 0:
-        return ans[0]
-    return None
+    if len(ans) == 0:
+        return None
+    return ans[0]
+    
 
 def SetUploadToProcessing(uid):
     up = getUpload(uid)

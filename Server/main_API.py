@@ -72,8 +72,7 @@ def getUploadData(upload):
                 'filename': None,
                 'timestamp': None,
                 'explanation': None}), 404
-    
-    if upload.status == 'done':
+    elif upload.status == 'done':
         with open(os.path.join(OUTPUT_FOLDER, str(upload.uid)+'.json'), 'r') as f:
             explanation = f.read()
             return jsonify({
