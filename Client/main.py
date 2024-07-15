@@ -10,7 +10,11 @@ class GPTExplainerClient:
     def upload(self, file_path, email):
         try:
             with open(file_path, 'rb') as file:
-                response = requests.post(f"{self.base_url}/upload", files={'file': file, 'email': email})
+                if email.isspace() or email == '':
+                    response = requests.post(f"{self.base_url}/upload", files={'file': file})
+                else:
+                    response = requests.post(f"{self.base_url}/upload", files={'file': file, 'email': email})
+                    
         except FileNotFoundError:
             return None
         return response.json()['uid']

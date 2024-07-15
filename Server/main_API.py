@@ -45,9 +45,10 @@ def load_file_from_request():
 
     if 'email' in request.files:
         email = request.files['email'].read().decode('utf-8')
-        if not email.isspace():
-            addUpload(file.filename, uid, email)
+        print(email)
+        addUpload(file.filename, uid, email)
     else:
+        print('no email given')
         addUpload(file.filename, uid)
 
     filename = f"{get_timestamp()}_{uid}_{file.filename}"

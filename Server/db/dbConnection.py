@@ -47,7 +47,7 @@ class Upload(Base):
     user = relationship('User', back_populates='uploads')
 
     def __init__(self, filename, email, uid):
-        self.uid = str(uuid.uuid4())
+        self.uid = uid
         self.filename = filename
         self.upload_time = datetime.datetime.utcnow()
         self.finish_time = None
@@ -102,7 +102,9 @@ def getUpload(uid):
     return Upload.getUpload(uid)
 
 def addUpload(filename, uid, email=None):
-    addUser(email)
+    if email != None:
+        addUser(email)
+        
     session.add(Upload(filename, email, uid))
     session.commit()
 
