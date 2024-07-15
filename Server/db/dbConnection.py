@@ -1,10 +1,9 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, delete
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey, delete, desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker, Session
 
 import uuid
 import datetime
-import os
 
 Base = declarative_base()
 
@@ -96,6 +95,9 @@ def deleteUser(email):
     session.query(User).filter(User.id == user.id).delete()
     session.commit()
         
+    
+    
+    
         
 def addUpload(filename, email):
     session.add(Upload(filename, email))
@@ -107,6 +109,11 @@ def getUpload(uid):
 def addUpload(filename, email=None):
     session.add(Upload(filename, email))
     session.commit()
+
+def GetPendingUploads():
+    ans = session.query(Upload).filter(Upload.status == 'panding').order_by(Upload.upload_time.asc()).all()
+    return ans
+
 
 
 # setup the connection
@@ -138,6 +145,9 @@ if __name__ == "__main__":
     addUpload('רביעי', "kfir@gmail.com")
     addUpload('אנונימי')
     
+    
+    for i in GetPendingUploads():
+        print(i)
     # deleteUser("kfir@gmail.com")
     # deleteUser("tamir@gmail.com")
     # deleteUser("amir@gmail.com")
