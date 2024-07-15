@@ -48,7 +48,6 @@ async def main():
     #the prints make this main self explanatory
     while True:
         unprocessed_files = get_unprocessed_files()
-        print(unprocessed_files)
         for upload in unprocessed_files:
             print('found -', upload.filename, ':', upload.uid)
             file_path = os.path.join(__.UPLOAD_FOLDER, upload.uid)
@@ -66,4 +65,5 @@ async def main():
         time.sleep(10)
 
 if __name__ == "__main__":
+    print('Explainer Is Listening..')
     asyncio.run(main())

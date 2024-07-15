@@ -4,7 +4,7 @@ import uuid
 import datetime
 import sys
 
-from db.dbConnection import Upload, addUpload, getUpload
+from db.dbConnection import Upload, addUpload, getUpload, GetUploadByEmailAndFilename
 from db.dbConnection import User, addUser, getUser, getUserUploads, deleteUser
 
 #flask setup
@@ -65,39 +65,41 @@ def load_file_from_request():
 # ╚════██║   ██║   ██╔══██║   ██║   ██║   ██║╚════██║
 # ███████║   ██║   ██║  ██║   ██║   ╚██████╔╝███████║
 # ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
-@app.route('/status/<uid>', methods=['GET'])
-def check_status(uid):
-    upload_files = os.listdir(UPLOAD_FOLDER)
-    output_files = os.listdir(OUTPUT_FOLDER)
+
+def getUploadData(upload):
+    if upload == None:
+        return jsonify({'status': 'unknown_uid',
+                'filename': None,
+                'timestamp': None,
+                'explanation': None}), 404
     
-    for filename in upload_files:
-        if uid == filename.split('_')[1]:
-            timestamp, _, original_filename = filename.split('_', 2)
-            if any(uid in fname for fname in output_files):
-                output_filepath = next(fname for fname in output_files if uid in fname)
-                with open(os.path.join(OUTPUT_FOLDER, output_filepath), 'r') as f:
-                    explanation = f.read()
-                return jsonify({
-                    'status': 'done',
-                    'filename': original_filename,
-                    'timestamp': timestamp,
-                    'explanation': explanation
-                })
-            else:
-                return jsonify({
-                    'status': 'pending',
-                    'filename': original_filename,
-                    'timestamp': timestamp,
-                    'explanation': None
-                })
-                
-    return jsonify({'status': 'unknown_uid',
-                    'filename': None,
-                    'timestamp': None,
-                    'explanation': None}), 404
+    if upload.status == 'done':
+        with open(os.path.join(OUTPUT_FOLDER, str(upload.uid)+'.json'), 'r') as f:
+            explanation = f.read()
+            return jsonify({
+                'status': upload.status,
+                'filename': upload.filename,
+                'timestamp': upload.upload_time,
+                'explanation': explanation
+        })
+    else:
+        return jsonify({
+                'status': upload.status,
+                'filename': upload.filename,
+                'timestamp': upload.upload_time,
+                'explanation': None
+        })
 
 
+@app.route('/status/<uid>', methods=['GET'])
+def check_file_status(uid):
+    return getUploadData(getUpload(uid))
 
+
+@app.route('/file_by_mail/<info>', methods=['GET'])
+def check_file_status_by_mail(info):
+    email, filename = tuple(info.split('::'))
+    return getUploadData(GetUploadByEmailAndFilename(email, filename))
 
 
 #C:/Users/kfirl/Desktop/presentation.pptx

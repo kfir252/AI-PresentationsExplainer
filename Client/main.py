@@ -24,6 +24,10 @@ class GPTExplainerClient:
         data = response.json()
         return Status(data['status'], data['filename'], data['timestamp'], data['explanation'])
 
+    def status_by_email(self, email, filename):
+        response = requests.get(f"{self.base_url}/file_by_mail/{email}::{filename}")
+        data = response.json()
+        return Status(data['status'], data['filename'], data['timestamp'], data['explanation'])
 
 
 class Status:
@@ -47,7 +51,29 @@ def console(client):
         colors.LightPurple("Enter Action[status/upload/quit]: ", end='')
         action = input()
 
-        if "status" in action.lower():
+        if "status -m" in action.lower():
+            colors.LightPurple("Enter email: ", end='')
+            if not colors.off:
+                print('\033[95m', end='')
+            email = input()
+            
+            colors.LightPurple("Enter filename: ", end='')
+            if not colors.off:
+                print('\033[95m', end='')
+            filename = input()
+            
+            status = client.status_by_email(email, filename)
+
+            if status.is_done():
+                colors.Clear(status.explanation)
+
+            elif status.is_unknown_uid():
+                colors.Red(f"Unknown_uid: ")
+            else:
+                colors.Yellow(f"Status: {status.status}")
+
+
+        elif "status" in action.lower():
             colors.LightPurple("Enter uid: ", end='')
             if not colors.off:
                 print('\033[95m', end='')
@@ -62,6 +88,7 @@ def console(client):
                 colors.Red(f"Unknown_uid: {uid}")
             else:
                 colors.Yellow(f"Status: {status.status}")
+        
 
         elif "upload" in action.lower():
             colors.LightPurple("Enter file path: ", end='')

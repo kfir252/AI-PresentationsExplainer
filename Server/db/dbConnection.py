@@ -72,8 +72,6 @@ class Upload(Base):
 
 
 
-
-
 #things you can do with just the users email
 def addUser(email):
     user = getUser(email)
@@ -112,6 +110,12 @@ def GetPendingUploads():
     ans = session.query(Upload).filter(Upload.status == 'panding').order_by(Upload.upload_time.asc()).all()
     return ans
 
+def GetUploadByEmailAndFilename(email, filename):
+    ans = session.query(Upload).filter(Upload.filename == filename).filter(Upload.user_id == getUser(email).id).order_by(Upload.upload_time.desc()).all()
+    if len(ans) > 0:
+        return ans[0]
+    return None
+
 def SetUploadToProcessing(uid):
     up = getUpload(uid)
     up.status = 'processing'
@@ -125,7 +129,7 @@ def SetUploadToDone(uid):
 
 
 # setup the connection
-engine = create_engine("sqlite:///Server/db/app.db", echo=True)#<------------------------------echo
+engine = create_engine("sqlite:///Server/db/app.db", echo=False)# SQL echo 
 Session = sessionmaker(bind=engine)
 Base.metadata.create_all(bind=engine)
 session = Session()
@@ -143,6 +147,7 @@ if __name__ == "__main__":
     #Make User
     addUser("kfir@gmail.com")
     addUpload('first', '10', "tamir@gmail.com")
+    print(GetUploadByEmailAndFilename("tamir@gmail.com", 'first'))
     # addUser("tamir@gmail.com")
     # addUser("amir@gmail.com")
     
@@ -155,8 +160,8 @@ if __name__ == "__main__":
     # addUpload('אנונימי')
     
     
-    for i in GetPendingUploads():
-        print(i)
+    # for i in GetPendingUploads():
+    #     print(i)
     # deleteUser("kfir@gmail.com")
     # deleteUser("tamir@gmail.com")
     # deleteUser("amir@gmail.com")
