@@ -34,7 +34,13 @@ To run the application, follow these steps:
 
 ## Client Usage
 
+The client has two versions, `colored` and `uncolored`.
+You will be prompted to choose your preference when opening the client console.
+
 The client is designed to provide a console application experience. Use the `help` command within the client to see a list of available actions and how to use them.
+
+![image](https://github.com/Scaleup-Excellenteam/final-exercise-kfir252/assets/43969860/49146165-cb01-409a-800c-a2024bd2d5c1)
+
 
 ---
 
