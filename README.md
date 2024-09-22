@@ -37,7 +37,7 @@ You will be prompted to choose your preference when opening the client console.
 
 The client is designed to provide a console application experience. Use the `help` command within the client to see a list of available actions and how to use them.
 
-![image](https://github.com/user-attachments/assets/f1012397-fe4b-44cb-96b2-64405c22faec)
+![344714216-49146165-cb01-409a-800c-a2024bd2d5c1](https://github.com/user-attachments/assets/3894f7c6-52ba-4eaa-8524-233387dd16bb)
 
 
 ---
