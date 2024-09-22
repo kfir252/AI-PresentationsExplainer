@@ -17,7 +17,7 @@ class __:
     UPLOAD_FOLDER = 'Server/db/uploads'
     OUTPUT_FOLDER = 'Server/db/outputs'
     
-    API_KEY = "sk-proj-xl0wdyeVmaJa2cneHXKvT3BlbkFJ1fGKvhcm74mM94u4j1Pr"
+    API_KEY = input('Enter GPT API key: ')
     MAX_SLIDES_ALLOWED = 10 #can be none for unlimited
     
     AI_SETUP = """You are a powerpoint slide explainer, but you can only read the text content of the slides (not the pictures).
@@ -43,7 +43,6 @@ async def upload_to_output_process(file_path):
 async def main():
     os.makedirs(__.UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(__.OUTPUT_FOLDER, exist_ok=True)
-
     '''here's where you start this program'''
     #the prints make this main self explanatory
     while True:
