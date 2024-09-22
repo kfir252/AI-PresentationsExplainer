@@ -11,26 +11,24 @@ To run the application, follow these steps:
 
 1. Navigate to the main folder (the one that contains both the `Server` and `Client` folders).
 2. Open three separate command prompt windows.
-3. In the first command prompt window, run the following command:
+3. In the first command prompt window, run the following command and:
 
     ```bash
     python .\Server\main_Explainer.py
     ```
+4.  Enter your OpenAI API key to connect the program with the OpenAI.
 
-4. In the second command prompt window, run the following command:
+5. In the second command prompt window, run the following command:
 
     ```bash
     python .\Server\main_API.py
     ```
 
-5. In the third command prompt window, run the following command:
+6. In the third command prompt window, run the following command:
 
     ```bash
     python .\Client\main.py
     ```
-
-6. Use the client.
-7. Use the `help` command for information about the actions you can perform.
 
 ## Client Usage
 
