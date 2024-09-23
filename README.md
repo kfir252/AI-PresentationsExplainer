@@ -40,6 +40,7 @@ The client application provides a console interface. You can explore available c
 ## Example Use
 An example demonstration of the project in action can be viewed [here](https://www.youtube.com/watch?v=G-un4N4wH3o).
 
+![344714216-49146165-cb01-409a-800c-a2024bd2d5c1](https://github.com/user-attachments/assets/3894f7c6-52ba-4eaa-8524-233387dd16bb)
 ## Requirements
 - **Python Packages**: The project uses libraries such as `asyncio`, `python-pptx` for parsing PowerPoint files, and the `openai` package for API communication.
 - **OpenAI API Key**: The system requires an OpenAI API key for generating explanations.
